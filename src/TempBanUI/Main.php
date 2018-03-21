@@ -78,6 +78,7 @@ class Main extends PluginBase implements Listener {
 										$banTime = $now + $day + $hour + $min;
 										$banInfo = $this->db->prepare("INSERT OR REPLACE INTO banPlayers (player, banTime, reason) VALUES (:player, :banTime, :reason);");
 										$banInfo->bindValue(":player", $target->getName());
+										$banInfo->bindValue(":sender", $sender->getName());
 										$banInfo->bindValue(":banTime", $banTime);
 										$banInfo->bindValue(":reason", $data[4]);
 										$result = $banInfo->execute();
@@ -93,12 +94,13 @@ class Main extends PluginBase implements Listener {
 						});
 						foreach($this->getServer()->getOnlinePlayers() as $player){
 							$player = $player->getPlayer();
+							$sender = $sender->getName();
 							$this->playerList[strtolower($player->getName())] = $player;
 							$list[] = $player->getName();
 						}
-						$form->setTitle(TextFormat::BOLD . "TEMPORARY BAN");
-						$form->addDropdown("\nChoose player", $list);
-						$form->addSlider("Day/s", 0, 30, 1);
+						$form->setTitle(TextFormat::BOLD . "§6Vois§bFactions§cPE §dTemp Ban System");
+						$form->addDropdown("\n§aChoose a player to ban", $list);
+						$form->addSlider("Day/s", 0, 100, 1);
 						$form->addSlider("Hour/s", 0, 24, 1);
 						$form->addSlider("Minute/s", 1, 60, 5);
 						$form->addInput("Reason");
