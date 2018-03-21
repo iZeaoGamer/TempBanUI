@@ -96,10 +96,7 @@ class Main extends PluginBase implements Listener {
 							$this->playerList[strtolower($player->getName())] = $player;
 							$list[] = $player->getName();
 							$now = time();
-							$day = ($data[1] * 86400);
-							$hour = ($data[2] * 3600);
-							$min = ($data[3] * 60);
-							$banTime = $now + $day + $hour + $min;
+							$banTime = $now;
 						}
 						$form->setTitle(TextFormat::BOLD . "§6Vois§bFactions§cPE §dTemp Ban System");
 						$form->addDropdown("\n§aChoose a player to ban", $list);
