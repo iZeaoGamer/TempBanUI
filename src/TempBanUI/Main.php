@@ -4,22 +4,17 @@ namespace TempBanUI;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
-
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
-
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
 class Main extends PluginBase implements Listener {
-
 	public $formCount = 0;
 	public $forms = [];
 	public $playerList = [];
@@ -51,7 +46,6 @@ class Main extends PluginBase implements Listener {
 		
 		)))->getAll();
     }
-
     public function onCommand(CommandSender $sender, Command $cmd, string $label,array $args) : bool {
 		switch($cmd->getName()){
 			case "tban":
@@ -95,12 +89,13 @@ class Main extends PluginBase implements Listener {
 							$player = $player->getPlayer();
 							$this->playerList[strtolower($player->getName())] = $player;
 							$list[] = $player->getName();
-							$now = time();
-							$banTime = $now;
 						}
 						$form->setTitle(TextFormat::BOLD . "§6Vois§bFactions§cPE §dTemp Ban System");
 						$form->addDropdown("\n§aChoose a player to ban", $list);
-						$form->addInput("Time". $now);
+						$form->addSlider("Day/s", 0, 100, 1);
+						$form->addSlider("Hour/s", 0, 24, 1);
+						$form->addSlider("Minute/s", 1, 60, 5);
+						$form->addSlider("Months", 1, 12, 5);
 						$form->addInput("Reason");
 						$form->sendToPlayer($sender);
 					}
@@ -195,7 +190,6 @@ class Main extends PluginBase implements Listener {
 		$form->addButton($this->message["InfoUIUnBanButton"]);
 		$form->sendToPlayer($sender);
 	}
-
 	public function onPlayerLogin(PlayerPreLoginEvent $event){
 		$player = $event->getPlayer();
 		$banInfo = $this->db->query("SELECT * FROM banPlayers;");
@@ -286,5 +280,4 @@ class Main extends PluginBase implements Listener {
 			}
 		}
 	}
-
 }
