@@ -95,7 +95,7 @@ class Main extends PluginBase implements Listener {
 						$form->addSlider("Day/s", 0, 100, 1);
 						$form->addSlider("Hour/s", 0, 24, 1);
 						$form->addSlider("Minute/s", 1, 60, 5);
-						$form->addSlider("Reason", "Fly hacking / Jesus hacks / Other fly related offenses", "Speed hacking", "Reach / Aura hacks", "XRay / Chest ESP", "Bhop/scaffold", "Toolbox/duping", "Auto Clicking", "Spawn Killing", "STR Grinding", "Bug abuse", "Threatening the server");
+						$form->addDropdown("Reason", "Fly hacking / Jesus hacks / Other fly related offenses", "Speed hacking", "Reach / Aura hacks", "XRay / Chest ESP", "Bhop/scaffold", "Toolbox/duping", "Auto Clicking", "Spawn Killing", "STR Grinding", "Bug abuse", "Threatening the server");
 						$form->addInput("Reason");
 						$form->sendToPlayer($sender);
 					}
