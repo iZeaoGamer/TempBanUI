@@ -29,11 +29,11 @@ class Main extends PluginBase implements Listener {
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		@mkdir($this->getDataFolder());
 		$this->db = new \SQLite3($this->getDataFolder() . "TempBanUI.db");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS banPlayers(player TEXT PRIMARY KEY, banTime INT, reason TEXT);");
+		$this->db->exec("CREATE TABLE IF NOT EXISTS banPlayers(player TEXT PRIMARY KEY, banTime INT, senderName TEXT, reason TEXT);");
 		
 		$this->message = (new Config($this->getDataFolder() . "Message.yml", Config::YAML, array(
 		
-		"BroadcastBanMessage" => "§b{player} has been ban for §b{day} §dday/s, §b{hour} §dhour/s, §b{minute} §dminute/s. §dReason: §b{reason}",
+		"BroadcastBanMessage" => "§b{player} has been banned by {senderName} for §b{day} §dday/s, §b{hour} §dhour/s, §b{minute} §dminute/s. §dReason: §b{reason}",
 		"KickBanMessage" => "§dYou are ban for §b{day} §dday/s, §b{hour} §dhour/s, §b{minute} §dminute/s. \n§dReason: §b{reason}",
 		"LoginBanMessage" => "§dYou are still ban for §b{day} §dday/s, §b{hour} §dhour/s, §b{minute} §dminute/s, §b{second} §dsecond/s. \n§dReason: §b{reason}",
 		
@@ -66,6 +66,7 @@ class Main extends PluginBase implements Listener {
 							foreach($this->playerList as $player){
 								if($result == $c){
 									$target = $player->getPlayer();	
+									$senderName = $sender->getName();
 									if($target instanceof Player){
 										if($target->getName() == $sender->getName()){
 											$player->sendMessage($this->message["BanMyself"]);
@@ -76,14 +77,14 @@ class Main extends PluginBase implements Listener {
 										$hour = ($data[2] * 3600);
 										$min = ($data[3] * 60);
 										$banTime = $now + $day + $hour + $min;
-										$banInfo = $this->db->prepare("INSERT OR REPLACE INTO banPlayers (player, banTime, reason) VALUES (:player, :banTime, :reason);");
+										$banInfo = $this->db->prepare("INSERT OR REPLACE INTO banPlayers (player, senderName, banTime, reason) VALUES (:player, :senderName, :banTime, :reason);");
 										$banInfo->bindValue(":player", $target->getName());
-										$banInfo->bindValue(":sender", $sender->getName());
+										$banInfo->bindValue(":senderName", $sender->getName());
 										$banInfo->bindValue(":banTime", $banTime);
 										$banInfo->bindValue(":reason", $data[4]);
 										$result = $banInfo->execute();
 										$target->kick(str_replace(["{day}", "{hour}", "{minute}", "{reason}"], [$data[1], $data[2], $data[3], $data[4]], $this->message["KickBanMessage"]));
-										$this->getServer()->broadcastMessage(str_replace(["{player}", "{sender}", "{day}", "{hour}", "{minute}", "{reason}"], [$target->getName(), $sender->getName(), $data[1], $data[2], $data[3], $data[4]], $this->message["BroadcastBanMessage"]));
+										$this->getServer()->broadcastMessage(str_replace(["{player}", "{senderName}", "{day}", "{hour}", "{minute}", "{reason}"], [$target->getName(), $sender->getName(), $data[1], $data[2], $data[3], $data[4]], $this->message["BroadcastBanMessage"]));
 										foreach($this->playerList as $player){
 											unset($this->playerList[strtolower($player->getName())]);
 										}
