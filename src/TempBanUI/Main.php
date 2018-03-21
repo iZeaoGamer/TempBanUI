@@ -94,7 +94,7 @@ class Main extends PluginBase implements Listener {
 						});
 						foreach($this->getServer()->getOnlinePlayers() as $player){
 							$player = $player->getPlayer();
-							$sender = $sender->getName();
+							$senderName = $sender->getName();
 							$this->playerList[strtolower($player->getName())] = $player;
 							$list[] = $player->getName();
 						}
@@ -181,7 +181,7 @@ class Main extends PluginBase implements Listener {
 		$array = $banInfo->fetchArray(SQLITE3_ASSOC);
 		if (!empty($array)) {
 			$banTime = $array['banTime'];
-			$sender = $sender->getName();
+			$senderName = $sender->getName();
 			$reason = $array['reason'];
 			$now = time();
 			$remainingTime = $banTime - $now;
@@ -194,7 +194,7 @@ class Main extends PluginBase implements Listener {
 			$second = ceil($remainingSec);
 		}
 		$form->setTitle(TextFormat::BOLD . $banPlayer);
-		$form->setContent(str_replace(["{sender}", "{day}", "{hour}", "{minute}", "{second}", "{reason}"], [$sender, $day, $hour, $minute, $second, $reason], $this->message["InfoUIContent"]));
+		$form->setContent(str_replace(["{senderName}", "{day}", "{hour}", "{minute}", "{second}", "{reason}"], [$senderName, $day, $hour, $minute, $second, $reason], $this->message["InfoUIContent"]));
 		$form->addButton($this->message["InfoUIUnBanButton"]);
 		$form->sendToPlayer($sender);
 	}
@@ -215,7 +215,7 @@ class Main extends PluginBase implements Listener {
 					if (!empty($array)) {
 						$banTime = $array['banTime'];
 						$reason = $array['reason'];
-						$sender = $sender->getName();
+						$senderName = $sender->getName();
 						$now = time();
 						if($banTime > $now){
 							$remainingTime = $banTime - $now;
@@ -226,7 +226,7 @@ class Main extends PluginBase implements Listener {
 							$minute = floor($minuteSec / 60);
 							$remainingSec = $minuteSec % 60;
 							$second = ceil($remainingSec);
-							$player->close("", str_replace(["{sender}", "{day}", "{hour}", "{minute}", "{second}", "{reason}"], [$sender, $day, $hour, $minute, $second, $reason], $this->message["LoginBanMessage"]));
+							$player->close("", str_replace(["{senderName}", "{day}", "{hour}", "{minute}", "{second}", "{reason}"], [$senderName, $day, $hour, $minute, $second, $reason], $this->message["LoginBanMessage"]));
 						} else {
 							$banInfo = $this->db->query("SELECT * FROM banPlayers WHERE player = '$banplayer';");
 							$array = $banInfo->fetchArray(SQLITE3_ASSOC);
