@@ -98,7 +98,7 @@ class Main extends PluginBase implements Listener {
 						}
 						$form->setTitle(TextFormat::BOLD . "§6Vois§bFactions§cPE §dTemp Ban System");
 						$form->addDropdown("\n§aChoose a player to ban", $list);
-						$form->addInput("Time");
+						$form->addInput("Time". $banTime);
 						$form->addInput("Reason");
 						$form->sendToPlayer($sender);
 					}
