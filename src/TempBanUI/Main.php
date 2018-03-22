@@ -96,10 +96,10 @@ class Main extends PluginBase implements Listener {
 							$this->playerList[strtolower($player->getName())] = $player;
 							$list[] = $player->getName();
 						}
-						$form->setTitle(TextFormat::BOLD . "TEMPORARY BAN");
-						$form->addDropdown("\nChoose player", $list);
-						$form->addSlider("Day/s", 0, 30, 1);
-						$form->addSlider("Hour/s", 0, 24, 1);
+						$form->setTitle(TextFormat::BOLD . "§6Void§bFactions§cPE §dTemp Ban");
+						$form->addDropdown("\n§aChoose a player to ban\n§bPlease do not ban someone for no reason.\n", $list);
+						$form->addSlider("Day/s", 0, 100, 1);
+						$form->addSlider("Hour/s", 0, 72, 1);
 						$form->addSlider("Minute/s", 1, 60, 5);
 						$form->addInput("Reason");
 						$form->sendToPlayer($sender);
