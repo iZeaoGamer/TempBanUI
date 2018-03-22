@@ -1,0 +1,16 @@
+---
+BroadcastBanMessage: '§a{player} §bhas been banned §cuntil §c{day} §dday/s, §b{hour} §dhour/s,
+  §b{minute} §dminute/s. §dReason: §5{reason}'
+KickBanMessage: "§dYou are currently banned §cuntil §b{day} §dday/s, §b{hour} §dhour/s, §b{minute}
+  §dminute/s. \n§dReason: §b{reason}"
+LoginBanMessage: "§dYou are still banned until §b{day} §dday/s, §b{hour} §dhour/s, §b{minute}
+  §dminute/s, §b{second} §dsecond/s. \n§dReason: §b{reason}"
+BanMyself: §cYou can't ban yourself.
+NoBanPlayers: §bNo ban players
+UnBanPlayer: §b{player} has been unbanned
+BanListTitle: §6Void§bFactions§cPE §Ban PLAYER LIST
+BanListContent: §5Choose player.
+InfoUIContent: "§dInformation: \n§aDay: §b{day} \n§dHour: §b{hour} \n§dMinute: §b{minute}
+  \n§dSecond: §b{second} \n§dReason: §b{reason} \n\n\n"
+InfoUIUnBanButton: §bUnban The player.
+...
