@@ -63,7 +63,6 @@ class Main extends PluginBase implements Listener {
 								return true;
 							}
 							$c = 0;
-							foreach($this->playerList as $player){
 								if($result == $c){
 									$target = $player->getPlayer();	
 									if($target instanceof Player){
@@ -83,21 +82,16 @@ class Main extends PluginBase implements Listener {
 										$result = $banInfo->execute();
 										$target->kick(str_replace(["{day}", "{hour}", "{minute}", "{reason}"], [$data[1], $data[2], $data[3], $data[4]], $this->message["KickBanMessage"]));
 										$this->getServer()->broadcastMessage(str_replace(["{player}", "{day}", "{hour}", "{minute}", "{reason}"], [$target->getName(), $data[1], $data[2], $data[3], $data[4]], $this->message["BroadcastBanMessage"]));
-										foreach($this->playerList as $player){
-											unset($this->playerList[strtolower($player->getName())]);
 										}
 									}
 								}
 								$c++;
 							}
 						});
-						foreach($this->getServer()->getOnlinePlayers() as $player){
-							$player = $player->getPlayer();
-							$this->playerList[strtolower($player->getName())] = $player;
-							$list[] = $player->getName();
 						}
 						$form->setTitle(TextFormat::BOLD . "§6Void§bFactions§cPE §dTemp Ban");
-						$form->addDropdown("\n§aChoose a player to ban\n§bPlease do not ban someone for no reason.\n", $list);
+						$form->addDropdown("\n§aChoose a player to ban\n§bPlease do not ban someone for no reason.");
+						$form->addInput("Player Name");
 						$form->addSlider("Day/s", 0, 100, 1);
 						$form->addSlider("Hour/s", 0, 72, 1);
 						$form->addSlider("Minute/s", 1, 60, 5);
