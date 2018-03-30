@@ -1,25 +1,17 @@
 <?php
-
 namespace TempBanUI;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
-
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
-
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
-
 class Main extends PluginBase implements Listener {
-
 	public $formCount = 0;
 	public $forms = [];
 	public $playerList = [];
@@ -51,7 +43,6 @@ class Main extends PluginBase implements Listener {
 		
 		)))->getAll();
     }
-
     public function onCommand(CommandSender $sender, Command $cmd, string $label,array $args) : bool {
 		switch($cmd->getName()){
 			case "tban":
@@ -63,6 +54,7 @@ class Main extends PluginBase implements Listener {
 								return true;
 							}
 							$c = 0;
+							foreach($this->playerList as $player){
 								if($result == $c){
 									$target = $player->getPlayer();	
 									if($target instanceof Player){
@@ -82,16 +74,21 @@ class Main extends PluginBase implements Listener {
 										$result = $banInfo->execute();
 										$target->kick(str_replace(["{day}", "{hour}", "{minute}", "{reason}"], [$data[1], $data[2], $data[3], $data[4]], $this->message["KickBanMessage"]));
 										$this->getServer()->broadcastMessage(str_replace(["{player}", "{day}", "{hour}", "{minute}", "{reason}"], [$target->getName(), $data[1], $data[2], $data[3], $data[4]], $this->message["BroadcastBanMessage"]));
+										foreach($this->playerList as $player){
+											unset($this->playerList[strtolower($player->getName())]);
 										}
 									}
 								}
 								$c++;
 							}
 						});
+						foreach($this->getServer()->getOnlinePlayers() as $player){
+							$player = $player->getPlayer();
+							$this->playerList[strtolower($player->getName())] = $player;
+							$list[] = $player->getName();
 						}
 						$form->setTitle(TextFormat::BOLD . "§6Void§bFactions§cPE §dTemp Ban");
-						$form->addDropdown("\n§aChoose a player to ban\n§bPlease do not ban someone for no reason.");
-						$form->addInput("Player Name");
+						$form->addDropdown("\n§aChoose a player to ban\n§bPlease do not ban someone for no reason.\n", $list);
 						$form->addSlider("Day/s", 0, 100, 1);
 						$form->addSlider("Hour/s", 0, 72, 1);
 						$form->addSlider("Minute/s", 1, 60, 5);
@@ -189,7 +186,6 @@ class Main extends PluginBase implements Listener {
 		$form->addButton($this->message["InfoUIUnBanButton"]);
 		$form->sendToPlayer($sender);
 	}
-
 	public function onPlayerLogin(PlayerPreLoginEvent $event){
 		$player = $event->getPlayer();
 		$banInfo = $this->db->query("SELECT * FROM banPlayers;");
@@ -280,5 +276,4 @@ class Main extends PluginBase implements Listener {
 			}
 		}
 	}
-
 }
