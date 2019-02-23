@@ -149,6 +149,7 @@ class Main extends PluginBase implements Listener {
 					$target->kick(str_replace(["{day}", "{hour}", "{minute}", "{reason}", "{staff}"], [$data[1], $data[2], $data[3], $data[4], $player->getName()], $this->message["KickBanMessage"]));
 				}
 				$this->getServer()->broadcastMessage(str_replace(["{player}", "{day}", "{hour}", "{minute}", "{reason}", "{staff}"], [$this->targetPlayer[$player->getName()], $data[1], $data[2], $data[3], $data[4], $player->getName()], $this->message["BroadcastBanMessage"]));
+				$this->getServer()->broadcastMessage(TextFormat::colorize("&7Their ban expires in &6$banTime"));
 				unset($this->targetPlayer[$player->getName()]);
 
 			}
@@ -156,7 +157,7 @@ class Main extends PluginBase implements Listener {
 		$list[] = $this->targetPlayer[$player->getName()];
 		$form->setTitle(TextFormat::BOLD . "TEMPORARY BAN");
 		$form->addDropdown("\nTarget", $list);
-		$form->addSlider("Day/s", 0, 30, 1);
+		$form->addSlider("Day/s", 0, 70, 1);
 		$form->addSlider("Hour/s", 0, 24, 1);
 		$form->addSlider("Minute/s", 0, 60, 5);
 		$form->addInput("Reason");
