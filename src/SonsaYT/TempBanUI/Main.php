@@ -144,6 +144,7 @@ class Main extends PluginBase implements Listener {
 				$banInfo->bindValue(":reason", $data[4]);
 				$banInfo->bindValue(":staff", $player->getName());
 				$banInfo->execute();
+				}
 				$target = $this->getServer()->getPlayerExact($this->targetPlayer[$player->getName()]);
 				if($target instanceof Player){
 					$target->kick(str_replace(["{day}", "{hour}", "{minute}", "{reason}", "{staff}"], [$data[1], $data[2], $data[3], $data[4], $player->getName()], $this->message["KickBanMessage"]));
@@ -162,6 +163,9 @@ class Main extends PluginBase implements Listener {
 		$form->addInput("Reason");
 		$form->sendToPlayer($player);
 		return $form;
+	}
+	if(empty($data[4])){
+	$player->sendMessage(TextFormat::colorize("&cPlease enter a valid reason."));
 	}
 
 	public function openTcheckUI($player){
